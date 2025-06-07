@@ -12,4 +12,43 @@ These container images should allow you to use it with Strimzi 0.47 and newer us
 
 ## Example `Kafka` custom resource
 
-TODO
+The following examples show how to mount the plugin into the Strimzi deployment.
+Either through the `Kafka` CR:
+
+```yaml
+kind: Kafka
+metadata:
+  name: my-cluster
+spec:
+  kafka:
+    # ...
+    template:
+      pod:
+        volumes:
+          - name: tiered-storage-plugin
+            image:
+              reference: ghcr.io/scholzj/kafka-tiered-storage-oci:1.0.0-filesystem
+      kafkaContainer:
+        volumeMounts:
+          - name: tiered-storage-plugin
+            mountPath: /mnt/tiered-storage-plugin
+```
+
+Or through the `KafkaNodePool` CR:
+
+```yaml
+kind: KafkaNodePool
+metadata:
+  name: broker
+spec:
+  template:
+    pod:
+      volumes:
+        - name: tiered-storage-plugin
+          image:
+            reference: ghcr.io/scholzj/kafka-tiered-storage-oci:1.0.0-filesystem
+    kafkaContainer:
+      volumeMounts:
+        - name: tiered-storage-plugin
+          mountPath: /mnt/tiered-storage-plugin
+```
