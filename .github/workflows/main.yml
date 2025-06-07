@@ -7,6 +7,9 @@ on:
 
 jobs:
   build:
+    matrix:
+      plugin: [filesystem, s3, gcs, azure]
+
     name: Build
     runs-on: ubuntu-latest
 
@@ -28,6 +31,10 @@ jobs:
 
       # Build the Container image for the filesystem plugin
       - name: Build the container
-        run: docker build --no-cache --build-arg VERSION=$(cat version) -t ghcr.io/scholzj/kafka-tiered-storage-oci:$(cat version)-filesystem ./filesystem
+        run: docker build --no-cache --build-arg VERSION=$(cat version) --build-arg PLUGIN=${PLUGIN} -t ghcr.io/scholzj/kafka-tiered-storage-oci:$(cat version)-${PLUGIN} .
+        env:
+          PLUGIN: ${{ matrix.plugin }}
       - name: Push the container
-        run: docker push ghcr.io/scholzj/kafka-tiered-storage-oci:$(cat version)-filesystem
+        run: docker push ghcr.io/scholzj/kafka-tiered-storage-oci:$(cat version)-${PLUGIN}
+        env:
+          PLUGIN: ${{ matrix.plugin }}
