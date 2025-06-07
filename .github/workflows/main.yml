@@ -7,8 +7,9 @@ on:
 
 jobs:
   build:
-    matrix:
-      plugin: [filesystem, s3, gcs, azure]
+    strategy:
+      matrix:
+        plugin: [filesystem, s3, gcs, azure]
 
     name: Build
     runs-on: ubuntu-latest
