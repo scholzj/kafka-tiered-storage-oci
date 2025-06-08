@@ -2,6 +2,7 @@
 
 This repository contains set of container images with the Apache Kafka [tiered storage plugins from Aiven](https://github.com/Aiven-Open/tiered-storage-for-apache-kafka).
 These container images should allow you to use it with Strimzi 0.47 and newer using the Kubernetes Image Volumes.
+The tag of the container specifies the type of the plugin it contains and its version.
 
 | Plugin               | Container image                                             |
 |----------------------|-------------------------------------------------------------|
@@ -41,6 +42,7 @@ kind: KafkaNodePool
 metadata:
   name: broker
 spec:
+  # ...
   template:
     pod:
       volumes:
